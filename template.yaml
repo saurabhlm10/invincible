@@ -1,0 +1,125 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  invincible
+
+  Sample SAM Template for invincible
+
+Parameters:
+  MongoUri:
+    Type: String
+    Description: MongoDB URI connection string
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 30
+    Runtime: nodejs18.x
+    Architectures:
+      - x86_64
+
+Resources:
+  CreateNicheFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/db/
+      Handler: createNiche.lambdaHandler
+      Events:
+        CreateNiche:
+          Type: Api
+          Properties:
+            Path: /niche
+            Method: post
+      Environment:
+        Variables:
+          MongoUri: !Ref MongoUri
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints:
+          - functions/createNiche.ts
+
+  GetNicheFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/db/
+      Handler: getNiche.lambdaHandler
+      Events:
+        CreateNiche:
+          Type: Api
+          Properties:
+            Path: /niche/{id}
+            Method: get
+      Environment:
+        Variables:
+          MongoUri: !Ref MongoUri
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints:
+          - functions/getNiche.ts
+
+  CreateNicheApifyDatasetStatusFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/db/
+      Handler: createNicheApifyDatasetStatus.lambdaHandler
+      Events:
+        CreateNicheApifyDatasetStatus:
+          Type: Api
+          Properties:
+            Path: /nicheApifyDatasetStatus
+            Method: post
+      Environment:
+        Variables:
+          MongoUri: !Ref MongoUri
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints:
+          - functions/createNicheApifyDatasetStatus.ts
+
+  CreateRawPostsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/db/
+      Handler: createRawPosts.lambdaHandler
+      Events:
+        CreateRawPosts:
+          Type: Api
+          Properties:
+            Path: /rawPosts
+            Method: post
+      Environment:
+        Variables:
+          MongoUri: !Ref MongoUri
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints:
+          - functions/createRawPosts.ts
+# Outputs:
+# ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+# Find out more about other implicit resources you can reference within SAM
+# https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+# HelloWorldApi:
+#   Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+#   Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+# HelloWorldFunction:
+#   Description: "Hello World Lambda Function ARN"
+#   Value: !GetAtt HelloWorldFunction.Arn
+# HelloWorldFunctionIamRole:
+#   Description: "Implicit IAM Role created for Hello World function"
+#   Value: !GetAtt HelloWorldFunctionRole.Arn
