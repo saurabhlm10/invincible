@@ -12,6 +12,12 @@ const nicheSchema = new Schema(
             required: true,
             default: [],
         },
+        collectionPages: {
+            type: [Schema.Types.ObjectId],
+            required: true,
+            default: [],
+            ref: 'CollectionIGPage',
+        },
     },
     { timestamps: true },
 );

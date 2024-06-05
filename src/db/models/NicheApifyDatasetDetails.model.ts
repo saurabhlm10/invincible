@@ -22,6 +22,12 @@ const nicheApifyDatasetStatusSchema = new mongoose.Schema(
             required: true,
             default: NicheApifyDatasetStatusEnum.INITIATED,
         },
+        completedCollectionPages: {
+            type: [Schema.Types.ObjectId],
+            required: true,
+            default: [],
+            ref: 'CollectionIGPage',
+        },
     },
     {
         timestamps: true,

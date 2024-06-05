@@ -10,3 +10,8 @@ export interface ICreateNicheParams {
 export interface IGetNicheParams {
     nicheId: string;
 }
+
+export interface ICheckIGPageInNicheParams {
+    nicheId: string;
+    pageId: string;
+}

@@ -65,6 +65,29 @@ Resources:
         EntryPoints:
           - functions/getNiche.ts
 
+  AddIGPageToNicheFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/db/
+      Handler: addIGPageToNiche.lambdaHandler
+      Events:
+        AddIGPageToNiche:
+          Type: Api
+          Properties:
+            Path: /niche/{nicheId}/add/{pageId}
+            Method: put
+      Environment:
+        Variables:
+          MongoUri: !Ref MongoUri
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints:
+          - functions/addIGPageToNiche.ts
+
   CreateNicheApifyDatasetStatusFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -110,6 +133,75 @@ Resources:
         Sourcemap: true
         EntryPoints:
           - functions/createRawPosts.ts
+
+  GetNicheRawPostsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/db/
+      Handler: getNicheRawPosts.lambdaHandler
+      Events:
+        CreateRawPosts:
+          Type: Api
+          Properties:
+            Path: /rawPosts/{nicheId}
+            Method: get
+      Environment:
+        Variables:
+          MongoUri: !Ref MongoUri
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints:
+          - functions/getNicheRawPosts.ts
+
+  CreateCollectionIGPageFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/db/
+      Handler: createCollectionIGPage.lambdaHandler
+      Events:
+        CreateRawPosts:
+          Type: Api
+          Properties:
+            Path: /collectionIGPage
+            Method: post
+      Environment:
+        Variables:
+          MongoUri: !Ref MongoUri
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints:
+          - functions/createCollectionIGPage.ts
+
+  AddCompletedCollectionPageToNicheApifyDatasetStatusFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/db/
+      Handler: addCompletedCollectionPageToNicheApifyDatasetStatus.lambdaHandler
+      Events:
+        CreateRawPosts:
+          Type: Api
+          Properties:
+            Path: /collectionIGPage/add/completedCollectionPage
+            Method: put
+      Environment:
+        Variables:
+          MongoUri: !Ref MongoUri
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints:
+          - functions/addCompletedCollectionPageToNicheApifyDatasetStatus.ts
 # Outputs:
 # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
 # Find out more about other implicit resources you can reference within SAM
