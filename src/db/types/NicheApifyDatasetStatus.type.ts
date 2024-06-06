@@ -1,13 +1,12 @@
 export interface IGetNicheApifyDatasetStatusParams {
-    datasetId: string;
+    nicheId: string;
 }
 
 export interface ICreateNicheApifyDatasetStatusParams {
     nicheId: string;
-    datasetId: string;
 }
 
 export interface ICheckCollectionPageAlreadyInNicheApifyDatasetStatusParams {
-    datasetId: string;
+    nicheId: string;
     collectionPageId: string;
 }

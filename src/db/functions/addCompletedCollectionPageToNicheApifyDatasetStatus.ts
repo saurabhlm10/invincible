@@ -17,13 +17,13 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
 
         const body = JSON.parse(event.body || '');
 
-        const { datasetId, collectionPageId } = body as { datasetId: string; collectionPageId: string };
+        const { nicheId, collectionPageId } = body as { nicheId: string; collectionPageId: string };
 
-        validate('datasetId', datasetId);
+        validate('nicheId', nicheId, true);
         validate('collectionPageId', collectionPageId, true);
 
         // Check NicheApifyDatasetStatusExists
-        const nicheApifyDatasetStatusExists = await getNicheApifyDatasetStatus({ datasetId });
+        const nicheApifyDatasetStatusExists = await getNicheApifyDatasetStatus({ nicheId });
         if (!nicheApifyDatasetStatusExists) throw new CustomError('NicheApifyDatasetStatus not found', 404);
 
         // Check Collection Page Exists
@@ -31,14 +31,14 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
         if (!collectionPageExists) throw new CustomError('Collection Page not found', 404);
 
         const checkCollectionPageAlreadyInNicheApifyDatasetStatus = await checkCollectionPageInNicheApifyDatasetStatus({
-            datasetId,
+            nicheId,
             collectionPageId,
         });
         if (checkCollectionPageAlreadyInNicheApifyDatasetStatus)
             return successReturn(`Collection Page ${collectionPageId} already in NicheApifyDatasetStatus `);
 
         const updatedNicheApifyDatasetStatus = await NicheApifyDatasetStatus.findOneAndUpdate(
-            { datasetId },
+            { nicheId },
             { $push: { completedCollectionPages: collectionPageId } },
             { new: true },
         );

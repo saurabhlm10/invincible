@@ -6,9 +6,9 @@ import {
 } from '../types/NicheApifyDatasetStatus.type';
 
 export const getNicheApifyDatasetStatus = (data: IGetNicheApifyDatasetStatusParams) => {
-    const { datasetId } = data;
+    const { nicheId } = data;
 
-    return NicheApifyDatasetStatus.findOne({ datasetId });
+    return NicheApifyDatasetStatus.findOne({ nicheId });
 };
 
 export const createNicheApifyDatasetStatus = (data: ICreateNicheApifyDatasetStatusParams) => {
@@ -18,6 +18,6 @@ export const createNicheApifyDatasetStatus = (data: ICreateNicheApifyDatasetStat
 export const checkCollectionPageInNicheApifyDatasetStatus = (
     data: ICheckCollectionPageAlreadyInNicheApifyDatasetStatusParams,
 ) => {
-    const { datasetId, collectionPageId } = data;
-    return NicheApifyDatasetStatus.exists({ datasetId, completedCollectionPages: collectionPageId });
+    const { nicheId, collectionPageId } = data;
+    return NicheApifyDatasetStatus.exists({ nicheId, completedCollectionPages: collectionPageId });
 };

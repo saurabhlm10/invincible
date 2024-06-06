@@ -6,12 +6,10 @@ import { checkNicheExists } from '../repository/niche.repository';
 import CustomError from '../utils/CustomError.util';
 import { validate } from '../validator';
 import RawPost from '../models/RawPost.model';
-import { MongooseError } from 'mongoose';
 import NicheApifyDatasetStatus, { NicheApifyDatasetStatusEnum } from '../models/NicheApifyDatasetDetails.model';
 
 interface CreateTempPostsBody {
     nicheId: string;
-    datasetId: string;
     posts: TempPostItem[];
 }
 
@@ -32,7 +30,7 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
 
         const data = JSON.parse(event.body || '') as CreateTempPostsBody;
 
-        const { nicheId, datasetId, posts } = data;
+        const { nicheId, posts } = data;
 
         validate('nicheId', nicheId, true);
 
@@ -71,10 +69,7 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
         }
 
         // Update NicheApifyDatasetStatus
-        await NicheApifyDatasetStatus.findOneAndUpdate(
-            { datasetId },
-            { status: NicheApifyDatasetStatusEnum.COMPLETED },
-        );
+        await NicheApifyDatasetStatus.findOneAndUpdate({ nicheId }, { status: NicheApifyDatasetStatusEnum.COMPLETED });
 
         return successReturn(successMessage);
     } catch (error) {

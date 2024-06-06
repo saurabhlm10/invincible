@@ -14,7 +14,7 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
         await connectToDB();
         const data = JSON.parse(event.body || '');
 
-        const { nicheId, datasetId } = data as { nicheId: string; datasetId: string };
+        const { nicheId } = data as { nicheId: string };
 
         // Validate Niche
         const niche = await checkNicheExists({ _id: nicheId });
@@ -22,7 +22,7 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
         if (!niche) throw new CustomError('Niche not valid', 400);
 
         // Find already exists
-        const exists = await getNicheApifyDatasetStatus({ datasetId });
+        const exists = await getNicheApifyDatasetStatus({ nicheId });
 
         if (exists) throw new CustomError('NicheApifyDatasetStatus already exists', 400);
 
