@@ -40,7 +40,7 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints:
-          - functions/createNiche.ts
+          - functions/Niche/createNiche.ts
 
   GetNicheFunction:
     Type: AWS::Serverless::Function
@@ -63,7 +63,7 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints:
-          - functions/getNiche.ts
+          - functions/Niche/getNiche.ts
 
   AddIGPageToNicheFunction:
     Type: AWS::Serverless::Function
@@ -74,7 +74,7 @@ Resources:
         AddIGPageToNiche:
           Type: Api
           Properties:
-            Path: /niche/{nicheId}/add/{pageId}
+            Path: /niche/addPage/{nicheId}/{pageId}
             Method: put
       Environment:
         Variables:
@@ -86,7 +86,7 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints:
-          - functions/addIGPageToNiche.ts
+          - functions/Niche/addIGPageToNiche.ts
 
   CreateNicheApifyDatasetStatusFunction:
     Type: AWS::Serverless::Function
@@ -109,7 +109,7 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints:
-          - functions/createNicheApifyDatasetStatus.ts
+          - functions/NicheApifyDatasetStatus/createNicheApifyDatasetStatus.ts
 
   CreateRawPostsFunction:
     Type: AWS::Serverless::Function
@@ -132,7 +132,7 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints:
-          - functions/createRawPosts.ts
+          - functions/RawPost/createRawPosts.ts
 
   GetNicheRawPostsFunction:
     Type: AWS::Serverless::Function
@@ -155,7 +155,7 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints:
-          - functions/getNicheRawPosts.ts
+          - functions/RawPost/getNicheRawPosts.ts
 
   CreateCollectionIGPageFunction:
     Type: AWS::Serverless::Function
@@ -178,7 +178,7 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints:
-          - functions/createCollectionIGPage.ts
+          - functions/CollectionIGPage/createCollectionIGPage.ts
 
   GetCollectionIGPageUsingNameFunction:
     Type: AWS::Serverless::Function
@@ -201,7 +201,7 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints:
-          - functions/getCollectionPageUsingName.ts
+          - functions/CollectionIGPage/getCollectionPageUsingName.ts
 
   AddCompletedCollectionPageToNicheApifyDatasetStatusFunction:
     Type: AWS::Serverless::Function
@@ -224,7 +224,7 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints:
-          - functions/addCompletedCollectionPageToNicheApifyDatasetStatus.ts
+          - functions/NicheApifyDatasetStatus/addCompletedCollectionPageToNicheApifyDatasetStatus.ts
 
   CheckNichePostCollectionFunction:
     Type: AWS::Serverless::Function
@@ -235,7 +235,7 @@ Resources:
         CreateRawPosts:
           Type: Api
           Properties:
-            Path: /NicheApifyDatasetStatus/checkNichePostCollection/{nicheId}
+            Path: /NicheApifyDatasetStatus/checkNichePostCollection/{nicheId}/{month}/{year}
             Method: get
       Environment:
         Variables:
@@ -247,7 +247,7 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints:
-          - functions/checkNichePostCollection.ts
+          - functions/NicheApifyDatasetStatus/checkNichePostCollection.ts
 # Outputs:
 # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
 # Find out more about other implicit resources you can reference within SAM

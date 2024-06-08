@@ -1,12 +1,11 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { errorHandler } from '../utils/errorHandler.util';
-import { connectToDB } from '../config/db.config';
-import { validate } from '../validator';
-import CollectionIGPage from '../models/CollectionIGPage.model';
-import CustomError from '../utils/CustomError.util';
-import { successReturn } from '../utils/successReturn.util';
-import { getNicheApifyDatasetStatus } from '../repository/nicheApifyDatasetStatus.repository';
-import { getAllNicheCollectionPages } from '../repository/collectionIGPage.repository';
+import { errorHandler } from '../../utils/errorHandler.util';
+import { connectToDB } from '../../config/db.config';
+import { validate } from '../../validator';
+import CustomError from '../../utils/CustomError.util';
+import { successReturn } from '../../utils/successReturn.util';
+import { getNicheApifyDatasetStatus } from '../../repository/nicheApifyDatasetStatus.repository';
+import { getAllNicheCollectionPages } from '../../repository/collectionIGPage.repository';
 
 export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {
@@ -14,12 +13,16 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
 
         const data = event.pathParameters;
 
-        const { nicheId } = data as { nicheId: string };
+        const { nicheId, month, year } = data as { nicheId: string; month: string; year: string };
 
         validate('nicheId', nicheId, true);
+        validate('month', month);
+        validate('year', year);
+
+        const yearInNumber = Number(year);
 
         // Get NicheApifyDatasetStatus
-        const nicheApifyDatasetStatus = await getNicheApifyDatasetStatus({ nicheId });
+        const nicheApifyDatasetStatus = await getNicheApifyDatasetStatus({ nicheId, month, year: yearInNumber });
 
         if (!nicheApifyDatasetStatus) throw new CustomError(`NicheApifyDatasetStatus ${nicheId} not found`, 404);
 

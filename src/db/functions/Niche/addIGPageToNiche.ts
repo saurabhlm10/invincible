@@ -1,13 +1,13 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { errorHandler } from '../utils/errorHandler.util';
-import { connectToDB } from '../config/db.config';
+import { errorHandler } from '../../utils/errorHandler.util';
+import { connectToDB } from '../../config/db.config';
 
-import { successReturn } from '../utils/successReturn.util';
-import { validate } from '../validator';
-import { checkIGPageInNiche, checkNicheExists } from '../repository/niche.repository';
-import CustomError from '../utils/CustomError.util';
-import { checkIGPageExists } from '../repository/igpage.repository';
-import Niche from '../models/Niche.model';
+import { successReturn } from '../../utils/successReturn.util';
+import { validate } from '../../validator';
+import { checkIGPageInNiche, checkNicheExists } from '../../repository/niche.repository';
+import CustomError from '../../utils/CustomError.util';
+import { checkIGPageExists } from '../../repository/igpage.repository';
+import Niche from '../../models/Niche.model';
 
 export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {

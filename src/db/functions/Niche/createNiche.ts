@@ -1,10 +1,10 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { connectToDB } from '../config/db.config';
-import { checkNicheExists, createNiche } from '../repository/niche.repository';
-import { validate } from '../validator';
-import { errorHandler } from '../utils/errorHandler.util';
-import CustomError from '../utils/CustomError.util';
-import { successReturn } from '../utils/successReturn.util';
+import { connectToDB } from '../../config/db.config';
+import { checkNicheExists, createNiche } from '../../repository/niche.repository';
+import { validate } from '../../validator';
+import { errorHandler } from '../../utils/errorHandler.util';
+import CustomError from '../../utils/CustomError.util';
+import { successReturn } from '../../utils/successReturn.util';
 
 export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {

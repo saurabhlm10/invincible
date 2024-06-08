@@ -3,20 +3,28 @@ import { INicheApifyDatasetStatus } from '../models/NicheApifyDatasetDetails.mod
 
 export interface IGetNicheApifyDatasetStatusParams {
     nicheId: string;
+    month: string;
+    year: number;
 }
 
 export interface ICreateNicheApifyDatasetStatusParams {
     nicheId: string;
+    month: string;
+    year: number;
 }
 
 export interface ICheckCollectionPageAlreadyInNicheApifyDatasetStatusParams {
     nicheId: string;
+    month: string;
+    year: number;
     collectionPageId: string;
 }
 
 export type IUpdateNicheApifyDatasetStatus = {
     identifier: {
         nicheId: string;
+        month: string;
+        year: number;
     };
     updateData: UpdateQuery<INicheApifyDatasetStatus>;
     options?: QueryOptions;

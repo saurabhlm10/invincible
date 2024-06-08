@@ -1,16 +1,18 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { errorHandler } from '../utils/errorHandler.util';
-import { connectToDB } from '../config/db.config';
-import { successReturn } from '../utils/successReturn.util';
-import { checkNicheExists } from '../repository/niche.repository';
-import CustomError from '../utils/CustomError.util';
-import { validate } from '../validator';
-import RawPost from '../models/RawPost.model';
-import NicheApifyDatasetStatus, { NicheApifyDatasetStatusEnum } from '../models/NicheApifyDatasetDetails.model';
-import { updateNicheApifyDatasetStatus } from '../repository/nicheApifyDatasetStatus.repository';
+import { errorHandler } from '../../utils/errorHandler.util';
+import { connectToDB } from '../../config/db.config';
+import { successReturn } from '../../utils/successReturn.util';
+import { checkNicheExists } from '../../repository/niche.repository';
+import CustomError from '../../utils/CustomError.util';
+import { validate } from '../../validator';
+import RawPost from '../../models/RawPost.model';
+import { NicheApifyDatasetStatusEnum } from '../../models/NicheApifyDatasetDetails.model';
+import { updateNicheApifyDatasetStatus } from '../../repository/nicheApifyDatasetStatus.repository';
 
 interface CreateTempPostsBody {
     nicheId: string;
+    month: string;
+    year: string;
     posts: TempPostItem[];
 }
 
@@ -31,7 +33,9 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
 
         const data = JSON.parse(event.body || '') as CreateTempPostsBody;
 
-        const { nicheId, posts } = data;
+        const { nicheId, month, year, posts } = data;
+
+        const yearInNumber = Number(year);
 
         validate('nicheId', nicheId, true);
 
@@ -71,7 +75,7 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
 
         // Update NicheApifyDatasetStatus
         await updateNicheApifyDatasetStatus({
-            identifier: { nicheId },
+            identifier: { nicheId, month, year: yearInNumber },
             updateData: { status: NicheApifyDatasetStatusEnum.COMPLETED },
         });
 

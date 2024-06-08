@@ -1,10 +1,10 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { errorHandler } from '../utils/errorHandler.util';
-import { connectToDB } from '../config/db.config';
-import { validate } from '../validator';
-import { getCollectionPageUsingName } from '../repository/collectionIGPage.repository';
-import CustomError from '../utils/CustomError.util';
-import { successReturn } from '../utils/successReturn.util';
+import { errorHandler } from '../../utils/errorHandler.util';
+import { connectToDB } from '../../config/db.config';
+import { validate } from '../../validator';
+import { getCollectionPageUsingName } from '../../repository/collectionIGPage.repository';
+import CustomError from '../../utils/CustomError.util';
+import { successReturn } from '../../utils/successReturn.util';
 
 export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {
