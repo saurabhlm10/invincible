@@ -1,11 +1,34 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 
 export enum NicheApifyDatasetStatusEnum {
     INITIATED = 'INITIATED',
     COMPLETED = 'COMPLETED',
 }
 
-const nicheApifyDatasetStatusSchema = new mongoose.Schema(
+const months = [
+    'january',
+    'february',
+    'march',
+    'april',
+    'may',
+    'june',
+    'july',
+    'august',
+    'september',
+    'october',
+    'november',
+    'december',
+];
+
+export interface INicheApifyDatasetStatus extends Document {
+    nicheId: mongoose.Types.ObjectId;
+    status: string;
+    completedCollectionPages: mongoose.Types.ObjectId[];
+    month: string;
+    year: number;
+}
+
+const nicheApifyDatasetStatusSchema = new mongoose.Schema<INicheApifyDatasetStatus>(
     {
         nicheId: {
             type: Schema.Types.ObjectId,
@@ -23,6 +46,15 @@ const nicheApifyDatasetStatusSchema = new mongoose.Schema(
             required: true,
             default: [],
             ref: 'CollectionIGPage',
+        },
+        month: {
+            type: String,
+            enum: months,
+            required: true,
+        },
+        year: {
+            type: Number,
+            required: true,
         },
     },
     {

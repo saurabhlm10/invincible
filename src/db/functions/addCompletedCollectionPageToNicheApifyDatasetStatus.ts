@@ -7,9 +7,9 @@ import { validate } from '../validator';
 import {
     checkCollectionPageInNicheApifyDatasetStatus,
     getNicheApifyDatasetStatus,
+    updateNicheApifyDatasetStatus,
 } from '../repository/nicheApifyDatasetStatus.repository';
 import { checkCollectionPageExists } from '../repository/collectionIGPage.repository';
-import NicheApifyDatasetStatus from '../models/NicheApifyDatasetDetails.model';
 
 export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {
@@ -37,11 +37,11 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
         if (checkCollectionPageAlreadyInNicheApifyDatasetStatus)
             return successReturn(`Collection Page ${collectionPageId} already in NicheApifyDatasetStatus `);
 
-        const updatedNicheApifyDatasetStatus = await NicheApifyDatasetStatus.findOneAndUpdate(
-            { nicheId },
-            { $push: { completedCollectionPages: collectionPageId } },
-            { new: true },
-        );
+        const updatedNicheApifyDatasetStatus = await updateNicheApifyDatasetStatus({
+            identifier: { nicheId },
+            updateData: { $push: { completedCollectionPages: collectionPageId } },
+            options: { new: true },
+        });
 
         return successReturn(`Added Collection Page ${collectionPageId} successfully`, updatedNicheApifyDatasetStatus);
     } catch (error) {

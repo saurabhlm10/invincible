@@ -3,6 +3,7 @@ import {
     ICheckCollectionPageAlreadyInNicheApifyDatasetStatusParams,
     ICreateNicheApifyDatasetStatusParams,
     IGetNicheApifyDatasetStatusParams,
+    IUpdateNicheApifyDatasetStatus,
 } from '../types/NicheApifyDatasetStatus.type';
 
 export const getNicheApifyDatasetStatus = (data: IGetNicheApifyDatasetStatusParams) => {
@@ -20,4 +21,9 @@ export const checkCollectionPageInNicheApifyDatasetStatus = (
 ) => {
     const { nicheId, collectionPageId } = data;
     return NicheApifyDatasetStatus.exists({ nicheId, completedCollectionPages: collectionPageId });
+};
+
+export const updateNicheApifyDatasetStatus = (data: IUpdateNicheApifyDatasetStatus) => {
+    const { identifier, updateData, options } = data;
+    return NicheApifyDatasetStatus.findOneAndUpdate(identifier, updateData, options);
 };

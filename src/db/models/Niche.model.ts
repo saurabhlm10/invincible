@@ -1,5 +1,13 @@
 import mongoose, { Schema } from 'mongoose';
 
+export interface INiche extends Document {
+    name: string;
+    pages: mongoose.Types.ObjectId[];
+    collectionPages: mongoose.Types.ObjectId[];
+    createdAt?: Date;
+    updatedAt?: Date;
+}
+
 const nicheSchema = new Schema(
     {
         name: {

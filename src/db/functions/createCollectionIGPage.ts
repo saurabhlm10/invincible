@@ -2,10 +2,10 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { errorHandler } from '../utils/errorHandler.util';
 import { checkNicheExists } from '../repository/niche.repository';
 import CustomError from '../utils/CustomError.util';
-import CollectionIGPage from '../models/CollectionIGPage.model';
 import { successReturn } from '../utils/successReturn.util';
 import { validate } from '../validator';
 import { connectToDB } from '../config/db.config';
+import { createCollectionPage } from '../repository/collectionIGPage.repository';
 
 export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {
@@ -35,7 +35,7 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
         if (!(source === 'tiktok' || source === 'instagram'))
             throw new CustomError('Invalid source. Must be: tiktok or instagram', 400);
 
-        const createdCollectionIGPage = await CollectionIGPage.create({
+        const createdCollectionIGPage = await createCollectionPage({
             ...body,
             followersCount: followersCountNumber,
         });

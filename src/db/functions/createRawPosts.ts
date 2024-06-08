@@ -7,6 +7,7 @@ import CustomError from '../utils/CustomError.util';
 import { validate } from '../validator';
 import RawPost from '../models/RawPost.model';
 import NicheApifyDatasetStatus, { NicheApifyDatasetStatusEnum } from '../models/NicheApifyDatasetDetails.model';
+import { updateNicheApifyDatasetStatus } from '../repository/nicheApifyDatasetStatus.repository';
 
 interface CreateTempPostsBody {
     nicheId: string;
@@ -69,7 +70,10 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
         }
 
         // Update NicheApifyDatasetStatus
-        await NicheApifyDatasetStatus.findOneAndUpdate({ nicheId }, { status: NicheApifyDatasetStatusEnum.COMPLETED });
+        await updateNicheApifyDatasetStatus({
+            identifier: { nicheId },
+            updateData: { status: NicheApifyDatasetStatusEnum.COMPLETED },
+        });
 
         return successReturn(successMessage);
     } catch (error) {

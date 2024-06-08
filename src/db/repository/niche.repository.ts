@@ -4,6 +4,7 @@ import {
     ICheckNicheExistsParams,
     ICreateNicheParams,
     IGetNicheParams,
+    IUpdateNicheByIdParams,
 } from '../types/Niche.type';
 
 export const checkNicheExists = async (data: ICheckNicheExistsParams) => {
@@ -23,4 +24,10 @@ export const checkIGPageInNiche = async (data: ICheckIGPageInNicheParams) => {
     const { nicheId, pageId } = data;
 
     return Niche.findOne({ _id: nicheId, pages: pageId });
+};
+
+export const updateNicheById = async (data: IUpdateNicheByIdParams) => {
+    const { id, updateData, options } = data;
+
+    return Niche.findByIdAndUpdate(id, updateData, options);
 };
