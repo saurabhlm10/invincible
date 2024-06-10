@@ -9,14 +9,14 @@ import RawPost from '../../models/RawPost.model';
 import { NicheApifyDatasetStatusEnum } from '../../models/NicheApifyDatasetDetails.model';
 import { updateNicheApifyDatasetStatus } from '../../repository/nicheApifyDatasetStatus.repository';
 
-interface CreateTempPostsBody {
+interface CreateRawPostsBody {
     nicheId: string;
     month: string;
     year: string;
-    posts: TempPostItem[];
+    posts: RawPostItem[];
 }
 
-interface TempPostItem {
+interface RawPostItem {
     source_url: string;
     originalViews: number;
     source: string;
@@ -25,15 +25,26 @@ interface TempPostItem {
     media_url: string;
     cover_url: string;
     caption: string;
+    originalVideoPublishSchedule: {
+        month: string;
+        year: string | number;
+    };
+    schedule?: {
+        month: string;
+        year: string | number;
+    };
 }
 
 export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+    console.log('REACHED');
     try {
         await connectToDB();
 
-        const data = JSON.parse(event.body || '') as CreateTempPostsBody;
+        const data = JSON.parse(event.body || '') as CreateRawPostsBody;
 
         const { nicheId, month, year, posts } = data;
+
+        console.log('data', data);
 
         const yearInNumber = Number(year);
 
@@ -49,8 +60,18 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
                 ...item,
                 originalViews: Number(item.originalViews),
                 nicheId,
+                originalVideoPublishSchedule: {
+                    ...item.originalVideoPublishSchedule,
+                    year: Number(item.originalVideoPublishSchedule.year),
+                },
+                schedule: {
+                    month,
+                    year,
+                },
             };
         });
+
+        // console.log('insertBody', insertBody);
 
         // Total errors
         let insertionErrorCount = 0;
@@ -63,10 +84,10 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
             duplicateErrorCount = error.writeErrors.filter((err: any) => err.err.code === 11000).length;
         });
 
-        let successMessage = 'TempPosts created successfully';
+        let successMessage = 'RawPosts created successfully';
 
         if (insertionErrorCount && insertionErrorCount === duplicateErrorCount)
-            successMessage = `TempPosts created successfully, except ${duplicateErrorCount} duplicates out of ${posts.length}`;
+            successMessage = `RawPosts created successfully, except ${duplicateErrorCount} duplicates out of ${posts.length}`;
         else if (insertionErrorCount && insertionErrorCount !== duplicateErrorCount) {
             successMessage = `Encountered ${insertionErrorCount - duplicateErrorCount} document errors out of ${
                 posts.length

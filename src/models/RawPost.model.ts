@@ -1,4 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
+import { ENV } from '../constants';
+
+const { months } = ENV;
 
 const rawPostsSchema = new Schema(
     {
@@ -35,6 +38,28 @@ const rawPostsSchema = new Schema(
         media_url: {
             type: String,
             unique: true,
+        },
+        originalVideoPublishSchedule: {
+            month: {
+                type: String,
+                enum: months,
+                required: true,
+            },
+            year: {
+                type: Number,
+                required: true,
+            },
+        },
+        schedule: {
+            month: {
+                type: String,
+                enum: months,
+                required: true,
+            },
+            year: {
+                type: Number,
+                required: true,
+            },
         },
     },
     {
