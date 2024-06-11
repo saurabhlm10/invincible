@@ -14,6 +14,8 @@ export interface IGetNicheParams {
     nicheId: string;
 }
 
+export type IGetNichePagesParams = IGetNicheParams;
+
 export interface ICheckIGPageInNicheParams {
     nicheId: string;
     pageId: string;

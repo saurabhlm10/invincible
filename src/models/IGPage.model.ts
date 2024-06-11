@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 export enum PageStages {
     One = 1,
@@ -10,6 +10,11 @@ const IGPageSchema = new mongoose.Schema(
     {
         name: {
             type: String,
+            required: true,
+            unique: true,
+        },
+        nicheId: {
+            type: Schema.Types.ObjectId,
             required: true,
             unique: true,
         },

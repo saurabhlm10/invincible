@@ -271,6 +271,33 @@ Resources:
         Sourcemap: true
         EntryPoints:
           - functions/NicheApifyDatasetStatus/checkNichePostCollection.ts
+
+  # <------------------- IGPage Start Point ----------------------->
+
+  GetNichePagesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: getNichePages.lambdaHandler
+      Events:
+        CreateNiche:
+          Type: Api
+          Properties:
+            Path: /igpage/niche/{nicheId}
+            Method: get
+      Environment:
+        Variables:
+          MongoUri: !Ref MongoUri
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints:
+          - functions/IGPage/getNichePages.ts
+# <------------------- IGPage End Point ----------------------->
+
 # Outputs:
 # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
 # Find out more about other implicit resources you can reference within SAM
