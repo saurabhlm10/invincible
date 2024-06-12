@@ -296,7 +296,55 @@ Resources:
         Sourcemap: true
         EntryPoints:
           - functions/IGPage/getNichePages.ts
-# <------------------- IGPage End Point ----------------------->
+  # <------------------- IGPage End Point ----------------------->
+  # <------------------- Stage Start Point ----------------------->
+
+  CreateStageFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: createStage.lambdaHandler
+      Events:
+        CreateNiche:
+          Type: Api
+          Properties:
+            Path: /stage
+            Method: post
+      Environment:
+        Variables:
+          MongoUri: !Ref MongoUri
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints:
+          - functions/Stage/createStage.ts
+
+  GetAllStagesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: getAllStages.lambdaHandler
+      Events:
+        CreateNiche:
+          Type: Api
+          Properties:
+            Path: /stage/all
+            Method: get
+      Environment:
+        Variables:
+          MongoUri: !Ref MongoUri
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints:
+          - functions/Stage/getAllStages.ts
+# <------------------- Stage End Point ----------------------->
 
 # Outputs:
 # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
