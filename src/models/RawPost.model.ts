@@ -3,6 +3,16 @@ import { ENV } from '../constants';
 
 const { months } = ENV;
 
+enum PostTimeEnum {
+    SIX_PM = '6PM',
+    SEVEN_PM = '7PM',
+    EIGHT_PM = '8PM',
+    NINE_PM = '9PM',
+    TEN_PM = '10PM',
+    ELEVEN_PM = '11PM',
+    TWELVE_AM = '12AM',
+}
+
 const rawPostsSchema = new Schema(
     {
         originalViews: {
@@ -39,6 +49,15 @@ const rawPostsSchema = new Schema(
             type: String,
             unique: true,
         },
+        mediaType: {
+            type: String,
+            enum: ['REELS'],
+            required: true,
+        },
+        ownerUsername: {
+            type: String,
+            required: true,
+        },
         originalVideoPublishSchedule: {
             month: {
                 type: String,
@@ -51,6 +70,13 @@ const rawPostsSchema = new Schema(
             },
         },
         schedule: {
+            time: {
+                type: String,
+                enum: PostTimeEnum,
+            },
+            day: {
+                type: Number,
+            },
             month: {
                 type: String,
                 enum: months,
@@ -60,6 +86,9 @@ const rawPostsSchema = new Schema(
                 type: Number,
                 required: true,
             },
+        },
+        page: {
+            type: String,
         },
     },
     {

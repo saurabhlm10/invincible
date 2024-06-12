@@ -25,6 +25,8 @@ interface RawPostItem {
     media_url: string;
     cover_url: string;
     caption: string;
+    mediaType: 'REELS';
+    ownerUsername: string;
     originalVideoPublishSchedule: {
         month: string;
         year: string | number;
@@ -36,15 +38,12 @@ interface RawPostItem {
 }
 
 export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    console.log('REACHED');
     try {
         await connectToDB();
 
         const data = JSON.parse(event.body || '') as CreateRawPostsBody;
 
         const { nicheId, month, year, posts } = data;
-
-        console.log('data', data);
 
         const yearInNumber = Number(year);
 
@@ -70,8 +69,6 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
                 },
             };
         });
-
-        // console.log('insertBody', insertBody);
 
         // Total errors
         let insertionErrorCount = 0;
