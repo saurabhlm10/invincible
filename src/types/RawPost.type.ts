@@ -7,3 +7,10 @@ export interface IGetAllMonthNicheRawPosts {
     month: string;
     year: number;
 }
+
+export interface IAddPagesToRawPostsParams {
+    posts: {
+        id: string;
+        page: string;
+    }[];
+}

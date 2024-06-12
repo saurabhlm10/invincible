@@ -111,6 +111,8 @@ Resources:
         EntryPoints:
           - functions/NicheApifyDatasetStatus/createNicheApifyDatasetStatus.ts
 
+  # <------------------- RawPost Start Point ----------------------->
+
   CreateRawPostsFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -179,6 +181,31 @@ Resources:
         Sourcemap: true
         EntryPoints:
           - functions/RawPost/getMonthNicheRawPosts.ts
+
+  AddPagesToRawPostsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: addPagesToRawPosts.lambdaHandler
+      Events:
+        CreateRawPosts:
+          Type: Api
+          Properties:
+            Path: /rawPosts/addPages
+            Method: post
+      Environment:
+        Variables:
+          MongoUri: !Ref MongoUri
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints:
+          - functions/RawPost/addPagesToRawPosts.ts
+
+  # <------------------- RawPost End Point ----------------------->
 
   CreateCollectionIGPageFunction:
     Type: AWS::Serverless::Function
