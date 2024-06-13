@@ -14,3 +14,17 @@ export interface IAddPagesToRawPostsParams {
         page: string;
     }[];
 }
+
+export interface IGetMonthNicheRawPostsWithPageAssignedParams {
+    nicheId: string;
+    month: string;
+    year: number;
+}
+
+export interface IUpdatePostsDateAndTimeParams {
+    posts: {
+        _id: string;
+        time: string;
+        day: number;
+    }[];
+}
