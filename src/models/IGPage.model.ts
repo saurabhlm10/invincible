@@ -18,6 +18,10 @@ const IGPageSchema = new mongoose.Schema(
             required: true,
             unique: true,
         },
+        followersCount: {
+            type: Number,
+            required: true,
+        },
         stage: {
             type: String,
             required: true,
